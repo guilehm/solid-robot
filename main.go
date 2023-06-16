@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"github.com/guilehm/solid-robot/internal/services"
+	"go.uber.org/fx"
+)
 
 func main() {
-	fmt.Println("hello world")
+	fx.New(
+		services.Module,
+	).Run()
 }
