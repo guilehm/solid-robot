@@ -21,12 +21,15 @@ func start(service *ServiceGroup, ctx context.Context, logger *zerolog.Logger) b
 			input = input[:len(input)-1]
 
 			if strings.ToLower(input) == "exit" {
-				return true
+				return false
 			}
-			err := service.Process(logger, ctx, input)
+
+			go service.workerInsertRaw()
+
+			err := service.Process(logger, input)
 			if err != nil {
 				logger.Error().Err(err).Msg("error calling service.Process")
-				return false
+				return true
 			}
 		}
 	}
@@ -41,7 +44,7 @@ func StartListener(lc fx.Lifecycle, s fx.Shutdowner, logger *zerolog.Logger, ser
 
 				go func() {
 					time.Sleep(5 * time.Millisecond)
-					if start(service, ctx, logger) {
+					if !start(service, ctx, logger) {
 						err := s.Shutdown()
 						if err != nil {
 							logger.Error().Err(err).Msg("failed to shutdown")
