@@ -6,6 +6,6 @@ type ClientQuery struct {
 	postgres *postgresStorage.Postgres
 }
 
-func NewClientQuery() *ClientQuery {
-	return &ClientQuery{}
+func NewClientQuery(postgres *postgresStorage.Postgres) *ClientQuery {
+	return &ClientQuery{postgres: postgres}
 }
