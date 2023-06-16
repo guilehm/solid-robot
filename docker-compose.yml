@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  solid:
+    build: .
+    image: solid
+    container_name: solid
+    command: go run main.go
+    volumes:
+      - .:/go/src/
+    working_dir: /go/src/
+    depends_on:
+      - postgres
+    ports:
+      - "8080:80"
+    environment:
+      PORT: 80
+      DATABASE_URL: postgres://postgres:postgres@db:5432/solid
+
+  postgres:
+    image: postgres:14.2-alpine
+    hostname: db
+    container_name: solid_postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=solid
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db-init.sql:/docker-entrypoint-initdb.d/db-init.sql
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
