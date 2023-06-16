@@ -23,9 +23,14 @@ func start(service *ServiceGroup, ctx context.Context, logger *zerolog.Logger) b
 			if strings.ToLower(input) == "exit" {
 				return true
 			}
-			service.Process(logger, ctx, input)
+			err := service.Process(logger, ctx, input)
+			if err != nil {
+				logger.Error().Err(err).Msg("error calling service.Process")
+				return false
+			}
 		}
 	}
+
 }
 
 func StartListener(lc fx.Lifecycle, s fx.Shutdowner, logger *zerolog.Logger, service *ServiceGroup) {

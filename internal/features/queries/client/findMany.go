@@ -7,7 +7,7 @@ import (
 )
 
 func (c *ClientQuery) FindMany(ctx context.Context, input *filters.ClientFilterInput) ([]*models.Client, error) {
-	sql := `SELECT id FROM client`
+	sql := `SELECT id FROM clients`
 
 	rows, err := c.postgres.DB.Query(ctx, sql)
 	if err != nil {
@@ -23,6 +23,7 @@ func (c *ClientQuery) FindMany(ctx context.Context, input *filters.ClientFilterI
 		}
 		clients = append(clients, &client)
 	}
+
 	return clients, nil
 
 }

@@ -1,4 +1,4 @@
-CREATE TABLE client_data_raw
+CREATE TABLE clients_data_raw
 (
     id                   UUID        NOT NULL PRIMARY KEY,
     document             VARCHAR(19) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE client_data_raw
     store_last_purchase  VARCHAR(24) NOT NULL
 );
 
-CREATE TABLE client_data
+CREATE TABLE clients
 (
     id                   UUID        NOT NULL PRIMARY KEY,
     document             VARCHAR(14) NOT NULL,
