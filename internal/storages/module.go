@@ -5,7 +5,7 @@ import (
 )
 
 var Module = fx.Options(
-	fx.Provide(
+	fx.Invoke(
 		newStorageGroup,
 	),
 )
