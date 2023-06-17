@@ -1,6 +1,7 @@
 package services
 
 import (
+	"context"
 	"github.com/google/uuid"
 	"github.com/guilehm/solid-robot/internal/features/models"
 	"strings"
@@ -14,12 +15,9 @@ func getValue(start, end int, line string) string {
 	return strings.Trim(line[start:end], " ")
 }
 
-func (service *ServiceGroup) parser() {
-	// TODO: add listener to quit
-	for {
-		line := <-service.channelRawMsg
-
-		service.channelClientRaw <- models.ClientRaw{
+func (service *ServiceGroup) parser(ctx context.Context, rawMsgChannel <-chan string, channelClientRaw chan<- models.ClientRaw) {
+	for line := range rawMsgChannel {
+		channelClientRaw <- models.ClientRaw{
 			ID:                 uuid.New(),
 			Document:           getValue(DocumentIndexStart, DocumentIndexEnd, line),
 			Private:            getValue(PrivateIndexStart, PrivateIndexEnd, line),
@@ -33,4 +31,8 @@ func (service *ServiceGroup) parser() {
 			CreatedAt: time.Now().Format(time.RFC3339),
 		}
 	}
+
+	close(channelClientRaw)
+
+	service.logger.Info().Msg("finished parsing data")
 }
