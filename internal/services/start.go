@@ -24,10 +24,7 @@ func start(service *ServiceGroup, ctx context.Context, logger *zerolog.Logger) b
 				return false
 			}
 
-			go service.parser()
-			go service.dbInsert(ctx)
-
-			err := service.Process(logger, input)
+			err := service.Process(ctx, logger, input)
 			if err != nil {
 				logger.Error().Err(err).Msg("error calling service.Process")
 				return true
@@ -43,9 +40,10 @@ func StartListener(lc fx.Lifecycle, s fx.Shutdowner, logger *zerolog.Logger, ser
 			OnStart: func(ctx context.Context) error {
 				logger.Info().Msg("starting service")
 
+				serviceContext := context.Background()
 				go func() {
 					time.Sleep(5 * time.Millisecond)
-					if !start(service, ctx, logger) {
+					if !start(service, serviceContext, logger) {
 						err := s.Shutdown()
 						if err != nil {
 							logger.Error().Err(err).Msg("failed to shutdown")
