@@ -3,16 +3,16 @@ package models
 import "time"
 
 type Client struct {
-	ID                 string
-	Document           string
-	DocumentType       string
-	IsPrivate          bool
-	IsIncomplete       bool
-	LastPurchaseDate   *time.Time
-	AverageTicket      float64
-	LastPurchaseTicket float64
-	MostFrequentStore  string
-	LastPurchaseStore  string
-	Status             string
-	CreatedAt          string
+	ID                  string
+	Document            string
+	DocumentType        string
+	Private             bool
+	Incomplete          bool
+	LastPurchaseDate    *time.Time
+	TicketAverage       int
+	TicketLastPurchaset int
+	StoreMostFrequent   string
+	StoreLastPurchase   string
+	Status              string
+	CreatedAt           string
 }
