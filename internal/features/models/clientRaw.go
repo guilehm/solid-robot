@@ -24,4 +24,5 @@ type ClientRaw struct {
 	StoreLastPurchase  string
 	Status             ClientRawStatus
 	CreatedAt          string
+	UpdatedAt          string
 }

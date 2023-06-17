@@ -1,11 +1,22 @@
 package models
 
-import "time"
+import (
+	"github.com/google/uuid"
+	"time"
+)
+
+type ClientDocumentType string
+
+const (
+	ClientDocumentTypeCPF     ClientDocumentType = "cpf"
+	ClientDocumentTypeCNPJ    ClientDocumentType = "cnpj"
+	ClientDocumentTypeUnknown ClientDocumentType = "unknown"
+)
 
 type Client struct {
-	ID                 string
+	ID                 uuid.UUID
 	Document           string
-	DocumentType       string
+	DocumentType       ClientDocumentType
 	Private            bool
 	Incomplete         bool
 	LastPurchaseDate   *time.Time
@@ -13,6 +24,6 @@ type Client struct {
 	TicketLastPurchase int
 	StoreMostFrequent  string
 	StoreLastPurchase  string
-	Status             string
-	CreatedAt          string
+	CreatedAt          *time.Time
+	UpdatedAt          *time.Time
 }
