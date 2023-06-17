@@ -25,7 +25,7 @@ func (service *ServiceGroup) Process(ctx context.Context, logger *zerolog.Logger
 		Str("filename", filename).
 		Msg("processing file")
 
-	start := time.Now()
+	startTime := time.Now()
 
 	path, err := getFilePath(filename)
 	if err != nil {
@@ -76,7 +76,7 @@ func (service *ServiceGroup) Process(ctx context.Context, logger *zerolog.Logger
 	logger.Info().
 		Int("line_count", lineCount).
 		Str("filename", filename).
-		Str("elapsed_time", time.Since(start).String()).
+		Str("elapsed_time", time.Since(startTime).String()).
 		Msg("finished processing file")
 
 	return nil
