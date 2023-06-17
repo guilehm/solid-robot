@@ -6,7 +6,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (cg *CommandGroup) SendBatch(ctx context.Context, batch *pgx.Batch) {
+func (cg *CommandGroup) SendCreateRawBatch(ctx context.Context, batch *pgx.Batch, formatChannel chan<- models.ClientRaw) {
 	logger := cg.logger
 
 	batchResults := cg.postgres.DB.SendBatch(ctx, batch)
@@ -28,10 +28,11 @@ func (cg *CommandGroup) SendBatch(ctx context.Context, batch *pgx.Batch) {
 			&clientRaw.StoreLastPurchase,
 		)
 		if err != nil {
-			logger.Error().Err(err).Msg("scanning batch result")
+			logger.Error().Err(err).Msg("scanning create raw batch result")
 			continue
 		}
 
+		formatChannel <- clientRaw
 	}
 
 }
