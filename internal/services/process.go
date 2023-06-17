@@ -8,6 +8,7 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/rs/zerolog"
 	"os"
+	"time"
 )
 
 func getFilePath(filename string) (string, error) {
@@ -24,6 +25,8 @@ func (service *ServiceGroup) Process(ctx context.Context, logger *zerolog.Logger
 		Str("filename", filename).
 		Msg("processing file")
 
+	start := time.Now()
+
 	path, err := getFilePath(filename)
 	if err != nil {
 		return err
@@ -35,13 +38,26 @@ func (service *ServiceGroup) Process(ctx context.Context, logger *zerolog.Logger
 	}
 
 	lineCount := 0
-	batch := &pgx.Batch{}
 
-	clientRawChannel := make(chan models.ClientRaw)
-	go service.insertClientRaw(ctx, batch, clientRawChannel)
+	const bufferSize = 50000
 
-	rawMsgChannel := make(chan string)
-	go service.parser(ctx, rawMsgChannel, clientRawChannel)
+	// create batches
+	batchClientRaw := &pgx.Batch{}
+	batchClient := &pgx.Batch{}
+
+	// create channels
+	quit := make(chan bool)
+	rawMsgChannel := make(chan string, bufferSize)
+	clientRawChannel := make(chan models.ClientRaw, bufferSize)
+	formatChannel := make(chan models.ClientRaw, bufferSize)
+	clientChannel := make(chan models.Client, bufferSize)
+
+	// start workers
+	go service.parserWorker(ctx, rawMsgChannel, clientRawChannel)
+	go service.insertClientRawWorker(ctx, batchClientRaw, clientRawChannel, formatChannel)
+
+	go service.formatterWorker(ctx, formatChannel, clientChannel)
+	go service.insertClientWorker(ctx, batchClient, clientChannel, quit)
 
 	scanner := bufio.NewScanner(file)
 	scanner.Scan()
@@ -55,9 +71,12 @@ func (service *ServiceGroup) Process(ctx context.Context, logger *zerolog.Logger
 		return scanner.Err()
 	}
 
+	<-quit
+
 	logger.Info().
 		Int("line_count", lineCount).
 		Str("filename", filename).
+		Str("elapsed_time", time.Since(start).String()).
 		Msg("finished processing file")
 
 	return nil
