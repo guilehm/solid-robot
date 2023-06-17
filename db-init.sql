@@ -17,15 +17,15 @@ CREATE TABLE clients_data_raw
 CREATE TABLE clients
 (
     id                   UUID        NOT NULL PRIMARY KEY,
-    document             VARCHAR(14) NOT NULL,
-    document_type        VARCHAR(4)  NOT NULL,
+    document             VARCHAR(20) NOT NULL,
+    document_type        VARCHAR(20)  NOT NULL,
     private              BOOLEAN     NOT NULL,
     incomplete           BOOLEAN     NOT NULL,
     last_purchase_date   DATE,
     ticket_average       BIGINT,
     ticket_last_purchase BIGINT,
-    store_most_frequent  VARCHAR(14),
-    store_last_purchase  VARCHAR(14),
+    store_most_frequent  VARCHAR(20),
+    store_last_purchase  VARCHAR(20),
     created_at           TIMESTAMP,
     updated_at           TIMESTAMP
 );
