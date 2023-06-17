@@ -31,36 +31,20 @@ func (service *ServiceGroup) Process(logger *zerolog.Logger, filename string) er
 
 	lineCount := 0
 
-	bulkLines := make([]string, 0, service.bulkAmount)
-
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		lineCount++
-		line := scanner.Text()
-
-		bulkLines = append(bulkLines, line)
-
-		if lineCount%service.bulkAmount == 0 {
-			logger.Info().
-				Int("line_count", lineCount).
-				Msg("publishing message raw data message")
-
-			service.rawMsgChannel <- bulkLines
-			bulkLines = make([]string, 0, service.bulkAmount)
-		}
-	}
-
-	// send remaining lines
-	if lineCount%service.bulkAmount != 0 {
-		logger.Info().
-			Int("line_count", lineCount).
-			Msg("publishing message raw data remainders message")
-		service.rawMsgChannel <- bulkLines
+		service.channelRawMsg <- scanner.Text()
 	}
 
 	if scanner.Err() != nil {
 		return scanner.Err()
 	}
+
+	logger.Info().
+		Int("line_count", lineCount).
+		Str("filename", filename).
+		Msg("finished processing file")
 
 	return nil
 }
