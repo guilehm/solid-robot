@@ -1,6 +1,16 @@
 package models
 
-import "github.com/google/uuid"
+import (
+	"github.com/google/uuid"
+)
+
+type ClientRawStatus string
+
+const (
+	ClientRawStatusWaiting   ClientRawStatus = "waiting"
+	ClientRawStatusProcessed ClientRawStatus = "processed"
+	ClientRawStatusFailed    ClientRawStatus = "failed"
+)
 
 type ClientRaw struct {
 	ID                 uuid.UUID
@@ -12,6 +22,6 @@ type ClientRaw struct {
 	TicketLastPurchase string
 	StoreMostFrequent  string
 	StoreLastPurchase  string
-	// Status             string
-	CreatedAt string
+	Status             ClientRawStatus
+	CreatedAt          string
 }
