@@ -1,20 +1,6 @@
 version: "3.8"
 
 services:
-  solid:
-    build: .
-    image: solid
-    container_name: solid
-    command: go run main.go
-    volumes:
-      - .:/go/src/
-    working_dir: /go/src/
-    depends_on:
-      - postgres
-    ports:
-      - "8080:80"
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/solid
 
   postgres:
     image: postgres:14.2-alpine
