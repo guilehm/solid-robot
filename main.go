@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/guilehm/solid-robot/internal/features/commands"
 	"github.com/guilehm/solid-robot/internal/features/queries"
 	"github.com/guilehm/solid-robot/internal/logger"
 	"github.com/guilehm/solid-robot/internal/services"
@@ -18,6 +19,7 @@ func main() {
 
 		// internal modules
 		queries.Module,
+		commands.Module,
 		services.Module,
 		postgresStorage.Module,
 

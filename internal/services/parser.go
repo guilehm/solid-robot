@@ -15,11 +15,12 @@ func getValue(start, end int, line string) string {
 }
 
 func (service *ServiceGroup) parser() {
+	// TODO: add listener to quit
 	for {
 		line := <-service.channelRawMsg
 
 		service.channelClientRaw <- models.ClientRaw{
-			ID:                 uuid.NewString(),
+			ID:                 uuid.New(),
 			Document:           getValue(DocumentIndexStart, DocumentIndexEnd, line),
 			Private:            getValue(PrivateIndexStart, PrivateIndexEnd, line),
 			Incomplete:         getValue(IncompleteIndexStart, IncompleteIndexEnd, line),

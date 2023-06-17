@@ -25,6 +25,7 @@ func start(service *ServiceGroup, ctx context.Context, logger *zerolog.Logger) b
 			}
 
 			go service.parser()
+			go service.dbInsert(ctx)
 
 			err := service.Process(logger, input)
 			if err != nil {
