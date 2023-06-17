@@ -15,7 +15,7 @@ func getValue(start, end int, line string) string {
 	return strings.Trim(line[start:end], " ")
 }
 
-func (service *ServiceGroup) parser(ctx context.Context, rawMsgChannel <-chan string, channelClientRaw chan<- models.ClientRaw) {
+func (service *ServiceGroup) parserWorker(ctx context.Context, rawMsgChannel <-chan string, channelClientRaw chan<- models.ClientRaw) {
 	for line := range rawMsgChannel {
 		now := time.Now().Format(time.RFC3339)
 		channelClientRaw <- models.ClientRaw{
