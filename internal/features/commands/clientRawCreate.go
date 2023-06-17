@@ -7,7 +7,7 @@ import (
 	clientRawRepository "github.com/guilehm/solid-robot/internal/features/repository/clientRaw"
 )
 
-func (cg *CommandGroup) CreateClientRaw(ctx context.Context, clientRaw models.ClientRaw) (uuid.UUID, error) {
+func (cg *CommandGroup) ClientRawCreate(ctx context.Context, clientRaw models.ClientRaw) (uuid.UUID, error) {
 	logger := cg.logger.
 		With().
 		Str("id", clientRaw.ID.String()).
