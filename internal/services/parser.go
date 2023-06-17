@@ -17,6 +17,7 @@ func getValue(start, end int, line string) string {
 
 func (service *ServiceGroup) parser(ctx context.Context, rawMsgChannel <-chan string, channelClientRaw chan<- models.ClientRaw) {
 	for line := range rawMsgChannel {
+		now := time.Now().Format(time.RFC3339)
 		channelClientRaw <- models.ClientRaw{
 			ID:                 uuid.New(),
 			Document:           getValue(DocumentIndexStart, DocumentIndexEnd, line),
@@ -28,7 +29,8 @@ func (service *ServiceGroup) parser(ctx context.Context, rawMsgChannel <-chan st
 			StoreMostFrequent:  getValue(StoreMostFrequentIndexStart, StoreMostFrequentIndexEnd, line),
 			StoreLastPurchase:  getValue(StoreLastPurchaseIndexStart, StoreLastPurchaseIndexEnd, line),
 			Status:             models.ClientRawStatusWaiting,
-			CreatedAt:          time.Now().Format(time.RFC3339),
+			CreatedAt:          now,
+			UpdatedAt:          now,
 		}
 	}
 

@@ -9,7 +9,9 @@ CREATE TABLE clients_data_raw
     ticket_last_purchase VARCHAR(24) NOT NULL,
     store_most_frequent  VARCHAR(20) NOT NULL,
     store_last_purchase  VARCHAR(24) NOT NULL,
-    status               VARCHAR(16) NOT NULL DEFAULT 'processing'
+    status               VARCHAR(16) NOT NULL DEFAULT 'processing',
+    created_at           TIMESTAMP,
+    updated_at           TIMESTAMP
 );
 
 CREATE TABLE clients
@@ -24,7 +26,6 @@ CREATE TABLE clients
     ticket_last_purchase BIGINT,
     store_most_frequent  VARCHAR(14),
     store_last_purchase  VARCHAR(14),
-    status               VARCHAR(20),
     created_at           TIMESTAMP,
     updated_at           TIMESTAMP
 );
