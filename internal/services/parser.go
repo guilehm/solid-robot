@@ -27,8 +27,8 @@ func (service *ServiceGroup) parser(ctx context.Context, rawMsgChannel <-chan st
 			TicketLastPurchase: getValue(TicketLastPurchaseIndexStart, TicketLastPurchaseIndexEnd, line),
 			StoreMostFrequent:  getValue(StoreMostFrequentIndexStart, StoreMostFrequentIndexEnd, line),
 			StoreLastPurchase:  getValue(StoreLastPurchaseIndexStart, StoreLastPurchaseIndexEnd, line),
-			// Status:             "",
-			CreatedAt: time.Now().Format(time.RFC3339),
+			Status:             models.ClientRawStatusWaiting,
+			CreatedAt:          time.Now().Format(time.RFC3339),
 		}
 	}
 

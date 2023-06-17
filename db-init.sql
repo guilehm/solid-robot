@@ -8,7 +8,8 @@ CREATE TABLE clients_data_raw
     ticket_average       VARCHAR(22) NOT NULL,
     ticket_last_purchase VARCHAR(24) NOT NULL,
     store_most_frequent  VARCHAR(20) NOT NULL,
-    store_last_purchase  VARCHAR(24) NOT NULL
+    store_last_purchase  VARCHAR(24) NOT NULL,
+    status               VARCHAR(16) NOT NULL DEFAULT 'processing'
 );
 
 CREATE TABLE clients

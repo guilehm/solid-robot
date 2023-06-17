@@ -37,11 +37,9 @@ func (service *ServiceGroup) Process(ctx context.Context, logger *zerolog.Logger
 	lineCount := 0
 	batch := &pgx.Batch{}
 
-	// start insert client raw worker
 	clientRawChannel := make(chan models.ClientRaw)
 	go service.insertClientRaw(ctx, batch, clientRawChannel)
 
-	// start parser worker
 	rawMsgChannel := make(chan string)
 	go service.parser(ctx, rawMsgChannel, clientRawChannel)
 
