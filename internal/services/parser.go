@@ -2,7 +2,7 @@ package services
 
 import "fmt"
 
-func (service *ServiceGroup) workerInsertRaw() {
+func (service *ServiceGroup) parser() {
 	for {
 		line := <-service.rawMsgChannel
 		fmt.Println("received", len(line))
