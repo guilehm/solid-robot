@@ -1,7 +1,9 @@
 package models
 
+import "github.com/google/uuid"
+
 type ClientRaw struct {
-	ID                 string
+	ID                 uuid.UUID
 	Document           string
 	Private            string
 	Incomplete         string
