@@ -1,20 +1,29 @@
 package services
 
-import "github.com/guilehm/solid-robot/internal/features/queries"
+import (
+	"github.com/guilehm/solid-robot/internal/features/models"
+	"github.com/guilehm/solid-robot/internal/features/queries"
+)
 
 type ServiceGroup struct {
-	queries       *queries.QueryGroup
-	rawMsgChannel chan []string
-	bulkAmount    int
+	queries    *queries.QueryGroup
+	bulkAmount int
+
+	channelRawMsg    chan string
+	channelClientRaw chan models.ClientRaw
 }
 
 func newServiceGroup(queries *queries.QueryGroup) *ServiceGroup {
-	rawMsgChannel := make(chan []string)
 	const bulkAmount = 1000
+	const channelSize = bulkAmount * bulkAmount
+
+	channelRawMsg := make(chan string, channelSize)
+	channelClientRaw := make(chan models.ClientRaw, channelSize)
 
 	return &ServiceGroup{
-		queries:       queries,
-		rawMsgChannel: rawMsgChannel,
-		bulkAmount:    bulkAmount,
+		queries:          queries,
+		bulkAmount:       bulkAmount,
+		channelRawMsg:    channelRawMsg,
+		channelClientRaw: channelClientRaw,
 	}
 }
