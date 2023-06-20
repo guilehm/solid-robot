@@ -1,7 +1,6 @@
 package services
 
 import (
-	"context"
 	"github.com/google/uuid"
 	"github.com/guilehm/solid-robot/internal/features/models"
 	"runtime"
@@ -16,7 +15,7 @@ func getValue(start, end int, line string) string {
 	return strings.Trim(line[start:end], " ")
 }
 
-func (service *ServiceGroup) parserWorker(ctx context.Context, rawMsgChannel <-chan string, channelClientRaw chan<- models.ClientRaw) {
+func (service *ServiceGroup) parserWorker(rawMsgChannel <-chan string, channelClientRaw chan<- models.ClientRaw) {
 	done := make(chan bool, runtime.NumCPU())
 	for i := 0; i < runtime.NumCPU(); i++ {
 		for line := range rawMsgChannel {

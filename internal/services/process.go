@@ -54,7 +54,7 @@ func (service *ServiceGroup) Process(ctx context.Context, logger *zerolog.Logger
 	clientChannel := make(chan models.Client, bufferSize)
 
 	// start workers
-	go service.parserWorker(ctx, rawMsgChannel, clientRawChannel)
+	go service.parserWorker(rawMsgChannel, clientRawChannel)
 	go service.insertClientRawWorker(ctx, batchClientRaw, clientRawChannel, formatChannel)
 
 	go service.formatterWorker(ctx, formatChannel, clientChannel)
