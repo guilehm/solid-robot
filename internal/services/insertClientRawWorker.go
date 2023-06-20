@@ -27,6 +27,6 @@ func (service *ServiceGroup) insertClientRawWorker(ctx context.Context, batch *p
 	close(formatChannel)
 
 	service.logger.Info().
-		Str("now", time.Now().Format(time.RFC3339Nano)).
+		Str("now", time.Now().Format("15:04:05.999999999")).
 		Msg("finished inserting client raw")
 }

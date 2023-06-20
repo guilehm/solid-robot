@@ -27,7 +27,7 @@ func (service *ServiceGroup) insertClientWorker(ctx context.Context, batch *pgx.
 	quit <- true
 
 	service.logger.Info().
-		Str("now", time.Now().Format(time.RFC3339Nano)).
+		Str("now", time.Now().Format("15:04:05.999999999")).
 		Msg("finished inserting client")
 
 }

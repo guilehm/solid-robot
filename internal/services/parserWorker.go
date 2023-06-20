@@ -44,6 +44,6 @@ func (service *ServiceGroup) parserWorker(rawMsgChannel <-chan string, channelCl
 	close(channelClientRaw)
 
 	service.logger.Info().
-		Str("now", time.Now().Format(time.RFC3339Nano)).
+		Str("now", time.Now().Format("15:04:05.999999999")).
 		Msg("finished parsing data")
 }
