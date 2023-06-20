@@ -22,6 +22,7 @@ func getFilePath(filename string) (string, error) {
 
 func (service *ServiceGroup) Process(ctx context.Context, logger *zerolog.Logger, filename string) error {
 	logger.Info().
+		Str("now", time.Now().Format(time.RFC3339Nano)).
 		Str("filename", filename).
 		Msg("processing file")
 

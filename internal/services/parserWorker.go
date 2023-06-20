@@ -20,7 +20,7 @@ func (service *ServiceGroup) parserWorker(ctx context.Context, rawMsgChannel <-c
 	done := make(chan bool, runtime.NumCPU())
 	for i := 0; i < runtime.NumCPU(); i++ {
 		for line := range rawMsgChannel {
-			now := time.Now().Format(time.RFC3339)
+			now := time.Now().Format(time.RFC3339Nano)
 			channelClientRaw <- models.ClientRaw{
 				ID:                 uuid.New(),
 				Document:           getValue(DocumentIndexStart, DocumentIndexEnd, line),
@@ -44,5 +44,7 @@ func (service *ServiceGroup) parserWorker(ctx context.Context, rawMsgChannel <-c
 	}
 	close(channelClientRaw)
 
-	service.logger.Info().Msg("finished parsing data")
+	service.logger.Info().
+		Str("now", time.Now().Format(time.RFC3339Nano)).
+		Msg("finished parsing data")
 }

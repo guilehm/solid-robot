@@ -5,6 +5,7 @@ import (
 	"github.com/guilehm/solid-robot/internal/features/models"
 	clientRawRepository "github.com/guilehm/solid-robot/internal/features/repository/clientRaw"
 	"github.com/jackc/pgx/v5"
+	"time"
 )
 
 func (service *ServiceGroup) insertClientRawWorker(ctx context.Context, batch *pgx.Batch, channelClientRaw <-chan models.ClientRaw, formatChannel chan models.ClientRaw) {
@@ -25,5 +26,7 @@ func (service *ServiceGroup) insertClientRawWorker(ctx context.Context, batch *p
 
 	close(formatChannel)
 
-	service.logger.Info().Msg("finished inserting client raw")
+	service.logger.Info().
+		Str("now", time.Now().Format(time.RFC3339Nano)).
+		Msg("finished inserting client raw")
 }

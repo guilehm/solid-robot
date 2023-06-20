@@ -6,6 +6,7 @@ import (
 	"github.com/guilehm/solid-robot/internal/features/models"
 	clientRawRepository "github.com/guilehm/solid-robot/internal/features/repository/clientRaw"
 	"github.com/jackc/pgx/v5"
+	"time"
 )
 
 type clientRawUpdateInput struct {
@@ -29,6 +30,8 @@ func (service *ServiceGroup) updateClientRaw(ctx context.Context, batch *pgx.Bat
 		service.commands.SendUpdateBatch(ctx, batch)
 	}
 
-	service.logger.Info().Msg("finished updating client raw")
+	service.logger.Info().
+		Str("now", time.Now().Format(time.RFC3339Nano)).
+		Msg("finished updating client raw")
 
 }
